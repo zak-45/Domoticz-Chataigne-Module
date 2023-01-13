@@ -1,0 +1,258 @@
+{
+	"name": "Domoticz",
+	"type": "HTTP",
+	"path": "Software",
+	
+	"version": "1.0.0",
+	"description": "Send command to Domoticz, Open source Home automation System",
+	"url":"",
+	"downloadURL": "",
+	"hasInput": true,
+	"hasOutput": true, 
+	"hideDefaultCommands": false,
+	"hideDefaultParameters": [
+		"protocol"
+	],
+	
+	"defaults": {
+		"baseAddress":"http://0.0.0.0:8080/json.htm",
+		"autoAdd": false,
+		"protocol":"JSON",
+		"authentication":
+			{
+				"enabled":false
+			}
+	},
+
+	"parameters": {
+	
+	
+		"Domoticz parameters": { 
+			"type":"Container", 
+			"collapsed":false, 
+			"IP": { 
+				"type":"String", 
+				"default":"0.0.0.0", 
+				"description":"Domoticz IP address "
+				}, 
+			"Port": {
+				"type":"Integer",
+				"default":8080,
+				"description":"Domoticz Port number "
+			} 
+		}
+	},
+
+	"values": {	
+	},
+	
+	"scripts": [
+		"Domoticz.js"
+	],
+	
+	"commands": {
+		
+		"Devices List":
+		{
+			"menu":"Domoticz Main",
+			"callback":"GetDevicesList"
+			
+		},
+
+		"Create Custom Variables for Devices":
+		{
+			"menu":"Domoticz Main",
+			"callback":"GetDevicesListCustom"
+			
+		},
+		"Switch On-Off ":
+		{
+			"menu":"Domoticz Switchs-Blinds-Lights",
+			"callback":"SwitchOnOff",
+			"parameters": {
+				"IDX": {
+					"type": "Integer",
+					"default": 0, 
+					"description": "Domoticz IDX number for the device",
+					"useForMapping": false
+				},
+				"switchcmd": {
+					"type": "Enum",
+					"options": {
+						"On":"On",
+						"Off":"Off",
+						"Toogle":"Toogle",
+						"Stop":"Stop"						
+					},
+					"default": "On", 
+					"description": "Switch command On/Off/Toogle/Stop",
+					"useForMapping": false
+				} 
+			}
+		},
+		
+		"Blinds On-Off ":
+		{
+			"menu":"Domoticz Switchs-Blinds-Lights",
+			"callback":"BlindsOnOff",
+			"parameters": {
+				"IDX": {
+					"type": "Integer",
+					"default": 0, 
+					"description": "Domoticz IDX number for the device",
+					"useForMapping": false
+				},
+				"blindscmd": {
+					"type": "Enum",
+					"options": {
+						"Open":"Open",
+						"Stop":"Stop",
+						"Close":"Close"
+					},
+					"default": "On", 
+					"description": "Blinds commands Open/Stop/Close",
+					"useForMapping": false
+				}
+			}
+		},
+
+		"Dimmer-Level ":
+		{
+			"menu":"Domoticz Switchs-Blinds-Lights",
+			"callback":"DimmerSBL",
+			"parameters": {
+				"IDX": {
+					"type": "Integer",
+					"default": 0,
+					"description": "Domoticz IDX number for the device",
+					"useForMapping": false
+				},
+				"dimmersb": {
+					"type": "Integer",
+					"default": 0,
+					"min":0,
+					"max":255,					
+					"description": "dimmable:
+    Some lights have 100 dim levels (like zwave and others), 
+	other hardware (kaku/lightwaverf) have other ranges like 16/32.
+    Level should be the dim level (not percentage), like 0-16 or 0-100 depending on the hardware used
+    When the light is off, it will be turned on.
+	Blinds: enter percentage, level will be 0-100.
+	Selector switch: enter the level number (eg 10, 20 or 30) that can be found in the edit section of a switch.",
+					"useForMapping": false
+				}
+			}
+		},
+		
+		"Light Color ":
+		{
+			"menu":"Domoticz Switchs-Blinds-Lights",
+			"callback":"LightColor",
+			"parameters": {
+				"IDX": {
+					"type": "Integer",
+					"default": 0, 
+					"description": "Domoticz IDX number for the device",
+					"useForMapping": false
+				},
+				"HEXcolor": {
+					"type": "String",
+					"default": "FFFFFF", 
+					"description": "Specify RGB and brightness (optional)
+    RGB as hexadecimal number, RRGGBB without prefix -- no 0x or # --",
+					"useForMapping": false
+				},
+				"brightness": {
+					"type" : "Float",
+					"default": 100,
+					"min":0,
+					"max":100,
+					"description": "Brightness",
+					"useForMapping": false
+				},
+				"mapcolor": {
+					"type" : "Color",
+					"description": " Help field -- Click on it to obtain the HEX values, copy and past the last sixth",
+					"useForMapping": false
+				}
+			}
+		},
+
+		"Text":
+		{
+			"menu":"Domoticz Sensors",
+			"callback":"SensorText",
+			"parameters": {
+				"IDX": {
+					"type": "Integer",
+					"default": 0, 
+					"description": "Domoticz IDX number for the device",
+					"useForMapping": false
+				},
+				"texttoadd": {
+					"type": "String",
+					"default": "", 
+					"description": "Text you want to display",
+					"useForMapping": false
+				}
+			}
+		},
+		"Distance":
+		{
+			"menu":"Domoticz Sensors",
+			"callback":"SensorDistance",
+			"parameters": {
+				"IDX": {
+					"type": "Integer",
+					"default": 0, 
+					"description": "Domoticz IDX number for the device",
+					"useForMapping": false
+				},
+				"distance": {
+					"type": "Float",
+					"default": 0, 
+					"description": "Distance in cm or inches, can be in decimals. For example 12.6",
+					"useForMapping": false
+				}
+			}
+		},
+		"Motion":
+		{
+			"menu":"Domoticz Sensors",
+			"callback":"SensorMotion",
+			"parameters": {
+				"IDX": {
+					"type": "Integer",
+					"default": 0, 
+					"description": "Domoticz IDX number for the device",
+					"useForMapping": false
+				},
+				"motion": {
+					"type": "Integer",
+					"default": 0, 
+					"description": "Motion value 0 = Off / 1 = On",
+					"useForMapping": false
+				}
+			}
+		},
+		"Custom":
+		{
+			"menu":"Domoticz Sensors",
+			"callback":"SensorCustom",
+			"parameters": {
+				"IDX": {
+					"type": "Integer",
+					"default": 0, 
+					"description": "Domoticz IDX number for the device",
+					"useForMapping": false
+				},
+				"custom": {
+					"type": "Float",
+					"default": 0, 
+					"description": "Value e.g. 12.345",
+					"useForMapping": false
+				}
+			}
+		}				
+	}
+}
